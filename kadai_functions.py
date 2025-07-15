@@ -1,3 +1,9 @@
+"""Data analysis and visualization functions for SDG data.
+
+This module contains functions for processing SDG (Sustainable Development Goals) data,
+calculating trendlines, and generating visualization images for country-specific data.
+"""
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -67,6 +73,14 @@ def country_trendline(country_name):
 
 
 def generate_image(country_name):
+    """Generate a plot image for a given country's SDG data with trendline.
+
+    Args:
+        country_name (str): The name of the country as represented in the SDG database.
+
+    Returns:
+        str: The filename of the generated image.
+    """
     df = process_sdg_data(
         "SG_GEN_PARL.xlsx",
         [
@@ -82,8 +96,6 @@ def generate_image(country_name):
         ],
     )
 
-    import matplotlib
-
     matplotlib.use("Agg")
     plt.clf()
 
@@ -93,10 +105,10 @@ def generate_image(country_name):
     plt.plot(timestamps, country_data, color="blue", label="Data")
 
     ## Second Graph
-    a, b, c = fit_trendline(timestamps, country_data)
+    slope, _, intercept = fit_trendline(timestamps, country_data)
     x = np.linspace(timestamps[0], timestamps[-1], 100)
-    y = a * x + c
-    plt.plot(x, y, label=f"y = {a}x + {c}", color="red")
+    y = slope * x + intercept
+    plt.plot(x, y, label=f"y = {slope}x + {intercept}", color="red")
 
     plt.xlabel("year")
     plt.ylabel("percent")
