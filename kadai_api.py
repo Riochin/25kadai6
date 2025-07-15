@@ -60,3 +60,8 @@ def generate_country_image(country: str):
     if os.path.exists(image_path):
         return FileResponse(image_path, media_type="image/png")
     return {"error": "画像生成に失敗しました"}
+
+@app.get("/say_bye/{name}")
+def say_bye(name):
+    """Return a personalized goodbye message."""
+    return {"Bye": name}
