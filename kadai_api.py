@@ -1,4 +1,8 @@
-# chapter_11_api.py
+"""FastAPI application for data analysis and visualization.
+
+This module provides endpoints for trendline calculation and image generation
+using the functions defined in kadai_functions.
+"""
 import os
 from typing import List
 
@@ -13,15 +17,18 @@ app = FastAPI()
 
 @app.get("/say_hi/")
 def say_hi():
+    """Return a simple greeting message."""
     return {"Hi": "There"}
 
 
 @app.get("/say_hello/{name}")
 def say_hello(name):
+    """Return a personalized greeting message."""
     return {"Hello": name}
 
 
 class TrendlineInput(BaseModel):
+    """Input model for trendline calculation with timestamps and data points."""
     timestamps: List[int]
     data: List[float]
 
@@ -32,22 +39,24 @@ class TrendlineInput(BaseModel):
     description="Provide a list of integer timestamps and a list of floats",
 )
 def calculate_trendline(trendline_input: TrendlineInput):
-    slope, r_squared = fit_trendline(trendline_input.timestamps, trendline_input.data)
+    """Calculate trendline slope and R-squared for given data points."""
+    slope, r_squared, _ = fit_trendline(trendline_input.timestamps, trendline_input.data)
     return {"slope": slope, "r_squared": r_squared}
 
 
 @app.get("/country_trendline/{country}")
 def calculate_country_trendline(country: str):
-    slope, r_squared, intercept = country_trendline(country)
+    """Calculate trendline for a specific country's data."""
+    slope, r_squared, _ = country_trendline(country)
     return {"slope": slope, "r_squared": r_squared}
 
 
 @app.get("/country_image/{country}")
 def generate_country_image(country: str):
-    IMAGE_PATH = generate_image(country)
-    # IMAGE_PATH = country+".png"
-    print(IMAGE_PATH)
-    if os.path.exists(IMAGE_PATH):
-        return FileResponse(IMAGE_PATH, media_type="image/png")
-    else:
-        return {"error": "画像生成に失敗しました"}
+    """Generate and return an image for a specific country."""
+    image_path = generate_image(country)
+    # image_path = country+".png"
+    print(image_path)
+    if os.path.exists(image_path):
+        return FileResponse(image_path, media_type="image/png")
+    return {"error": "画像生成に失敗しました"}
