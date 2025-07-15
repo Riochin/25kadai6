@@ -10,8 +10,9 @@ from kadai_functions import country_trendline, fit_trendline, generate_image
 
 app = FastAPI()
 
+
 @app.get("/say_hi/")
-def say_hi():   
+def say_hi():
     return {"Hi": "There"}
 
 
@@ -37,14 +38,14 @@ def calculate_trendline(trendline_input: TrendlineInput):
 
 @app.get("/country_trendline/{country}")
 def calculate_country_trendline(country: str):
-    slope, r_squared,intercept = country_trendline(country)
+    slope, r_squared, intercept = country_trendline(country)
     return {"slope": slope, "r_squared": r_squared}
 
 
 @app.get("/country_image/{country}")
 def generate_country_image(country: str):
     IMAGE_PATH = generate_image(country)
-    #IMAGE_PATH = country+".png"
+    # IMAGE_PATH = country+".png"
     print(IMAGE_PATH)
     if os.path.exists(IMAGE_PATH):
         return FileResponse(IMAGE_PATH, media_type="image/png")

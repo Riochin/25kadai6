@@ -17,7 +17,7 @@ def fit_trendline(year_timestamps, data):
     result = linregress(year_timestamps, data)
     slope = round(result.slope, 3)
     r_squared = round(result.rvalue**2, 3)
-    intercept = round(result.intercept,3)
+    intercept = round(result.intercept, 3)
     return slope, r_squared, intercept
 
 
@@ -62,13 +62,14 @@ def country_trendline(country_name):
     )
     timestamps = [int(i) for i in df.index.tolist()]
     country_data = df[country_name].tolist()
-    slope, r_squared, intercept  = fit_trendline(timestamps, country_data)
+    slope, r_squared, intercept = fit_trendline(timestamps, country_data)
     return slope, r_squared, intercept
+
 
 def generate_image(country_name):
     df = process_sdg_data(
         "SG_GEN_PARL.xlsx",
-            [
+        [
             "Goal",
             "Target",
             "Indicator",
@@ -78,32 +79,32 @@ def generate_image(country_name):
             "Reporting Type",
             "Sex",
             "Units",
-            ],
+        ],
     )
 
     import matplotlib
-    matplotlib.use('Agg')
+
+    matplotlib.use("Agg")
     plt.clf()
 
     ## First Graph
     timestamps = [int(i) for i in df.index.tolist()]
     country_data = df[country_name].tolist()
-    plt.plot(timestamps, country_data, color='blue', label='Data')  
+    plt.plot(timestamps, country_data, color="blue", label="Data")
 
     ## Second Graph
-    a,b,c  = fit_trendline(timestamps, country_data)
-    x = np.linspace(timestamps[0], timestamps[-1], 100) 
+    a, b, c = fit_trendline(timestamps, country_data)
+    x = np.linspace(timestamps[0], timestamps[-1], 100)
     y = a * x + c
-    plt.plot(x, y, label=f'y = {a}x + {c}', color='red')  
+    plt.plot(x, y, label=f"y = {a}x + {c}", color="red")
 
-    plt.xlabel('year')
-    plt.ylabel('percent')
+    plt.xlabel("year")
+    plt.ylabel("percent")
     plt.grid(True)
-    plt.title(country_name + ': Data Plot with Linear Regression')
-    plt.savefig(country_name+".png", dpi=300, bbox_inches='tight')
-    #plt.show()
-    return country_name+".png"
-
-#generate_image("India")
+    plt.title(country_name + ": Data Plot with Linear Regression")
+    plt.savefig(country_name + ".png", dpi=300, bbox_inches="tight")
+    # plt.show()
+    return country_name + ".png"
 
 
+# generate_image("India")
