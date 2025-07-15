@@ -1,10 +1,12 @@
 # chapter_11_api.py
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import List
-from kadai_functions import fit_trendline, country_trendline, generate_image
-from fastapi.responses import FileResponse
 import os
+from typing import List
+
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
+
+from kadai_functions import country_trendline, fit_trendline, generate_image
 
 app = FastAPI()
 

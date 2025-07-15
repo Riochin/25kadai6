@@ -1,7 +1,8 @@
-import pandas as pd
-from scipy.stats import linregress
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from scipy.stats import linregress
+
 
 def fit_trendline(year_timestamps, data):
     """Fits a trendline to the given data using linear regression.
